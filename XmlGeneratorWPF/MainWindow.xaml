@@ -26,12 +26,33 @@
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
 
-        <Button Grid.Column="1" Grid.Row="1" Width="150" x:Name="operationButton"
+        <Button Grid.Column="1" Grid.Row="1" Width="230" x:Name="operationButton"
                 Content="Operation" Margin="10" Click="OperationButton_Click"/>
-        <Button Grid.Column="2" Grid.Row="1" Width="150" x:Name="plateRecognitionButton"
+        <Button Grid.Column="2" Grid.Row="1" Width="230" x:Name="plateRecognitionButton"
                 Content="Plate Recognition" Margin="10" Click="PlateRecognitionButton_Click"/>
-        <Button Grid.Column="3" Grid.Row="1" Width="150" x:Name="securityRecordingButton"
+        <Button Grid.Column="3" Grid.Row="1" Width="230" x:Name="securityRecordingButton"
                 Content="Security Recording" Margin="10" Click="SecurityRecordingButton_Click"/>
 
+        <!-- IP textboxes for plate recognition and security recording -->
+        <TextBlock Grid.Column="1" Grid.Row="2" Text="From address:" x:Name="fromTextBlock"
+                   Margin="150,20,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="2" Width="115" x:Name="fromTextBox"
+                 Margin="0,20,0,5" Visibility="Collapsed"/>
+        <TextBlock Grid.Column="1" Grid.Row="3" Text="To address:" x:Name="toTextBox"
+                  Margin="150,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="3" Width="115" x:Name="toTextBlock"
+                 Margin="0,0,0,5" Visibility="Collapsed"/>
+        
+        <!-- Source path for security recording -->
+        <TextBlock Grid.Column="1" Grid.Row="4" Text="Source Path:" x:Name="sPathTextBlock"
+                   Margin="150,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="1" Grid.Row="4" Width="300" x:Name="sPathTextBox" 
+                 Margin="186,0,0,5" Grid.ColumnSpan="3" Visibility="Collapsed"/>
+
+        <!-- Destination path for plate recognition and security recording -->
+        <TextBlock Grid.Column="1" Grid.Row="5" Text="Destination Path:" x:Name="dPathTextBlock"
+                   Margin="150,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="1" Grid.Row="5" Width="300" x:Name="dPathTextBox" 
+                 Margin="186,0,0,5" Grid.ColumnSpan="3" Visibility="Collapsed"/>
     </Grid>
 </Window>
