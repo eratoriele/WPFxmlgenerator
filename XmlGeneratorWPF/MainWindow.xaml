@@ -10,9 +10,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
             <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="20" />
         </Grid.ColumnDefinitions>
 
@@ -27,7 +26,12 @@
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="1" Grid.Row="1" FontSize="18" Text="Hello generator" />
+        <Button Grid.Column="1" Grid.Row="1" Width="150" x:Name="operationButton"
+                Content="Operation" Margin="10" Click="OperationButton_Click"/>
+        <Button Grid.Column="2" Grid.Row="1" Width="150" x:Name="plateRecognitionButton"
+                Content="Plate Recognition" Margin="10" Click="PlateRecognitionButton_Click"/>
+        <Button Grid.Column="3" Grid.Row="1" Width="150" x:Name="securityRecordingButton"
+                Content="Security Recording" Margin="10" Click="SecurityRecordingButton_Click"/>
 
     </Grid>
 </Window>

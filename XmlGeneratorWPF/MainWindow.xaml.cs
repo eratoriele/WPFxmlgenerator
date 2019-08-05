@@ -24,5 +24,20 @@ namespace XmlGeneratorWPF
         {
             InitializeComponent();
         }
+
+        private void OperationButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PlateRecognitionButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SecurityRecordingButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
