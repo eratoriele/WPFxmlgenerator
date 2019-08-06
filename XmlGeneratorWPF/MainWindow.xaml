@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XmlGeneratorWPF"
         mc:Ignorable="d"
-        Title="XML Generator" Height="450" Width="800">
+        Title="XML Generator" Height="650" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
@@ -22,6 +22,23 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
@@ -33,26 +50,134 @@
         <Button Grid.Column="3" Grid.Row="1" Width="230" x:Name="securityRecordingButton"
                 Content="Security Recording" Margin="10" Click="SecurityRecordingButton_Click"/>
 
-        <!-- IP textboxes for plate recognition and security recording -->
-        <TextBlock Grid.Column="1" Grid.Row="2" Text="From address:" x:Name="fromTextBlock"
-                   Margin="150,20,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
-        <TextBox Grid.Column="2" Grid.Row="2" Width="115" x:Name="fromTextBox"
-                 Margin="0,20,0,5" Visibility="Collapsed"/>
-        <TextBlock Grid.Column="1" Grid.Row="3" Text="To address:" x:Name="toTextBox"
-                  Margin="150,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
-        <TextBox Grid.Column="2" Grid.Row="3" Width="115" x:Name="toTextBlock"
-                 Margin="0,0,0,5" Visibility="Collapsed"/>
-        
-        <!-- Source path for security recording -->
-        <TextBlock Grid.Column="1" Grid.Row="4" Text="Source Path:" x:Name="sPathTextBlock"
-                   Margin="150,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
-        <TextBox Grid.Column="1" Grid.Row="4" Width="300" x:Name="sPathTextBox" 
-                 Margin="186,0,0,5" Grid.ColumnSpan="3" Visibility="Collapsed"/>
-
+        <!-- Rest of the objects for operation besides first 2 ip boxes -->
+        <TextBlock Grid.Column="1" Grid.Row="2" Text="Num of floors:" x:Name="floorsTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="2" Width="auto" x:Name="floorsTextBox"
+                 Margin="10,0,0,5" Visibility="Collapsed" PreviewTextInput="intTextBox_PreviewTextInput" />
+        <TextBlock Grid.Column="1" Grid.Row="3" Text="Num of groups:" x:Name="groupsTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="3" Width="auto" x:Name="groupsTextBox"
+                 Margin="10,0,0,5" Visibility="Collapsed" PreviewTextInput="intTextBox_PreviewTextInput" />
+        <!-- Combobox for group types -->
+        <TextBlock Grid.Column="1" Grid.Row="4" Text="Groups type:" x:Name="groupsTypeTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <ComboBox Grid.Column="2" Grid.Row="4" Width="auto" x:Name="groupsTypeComboBox"
+                 Margin="10,0,0,5" Visibility="Collapsed">
+            <ComboBoxItem>controller</ComboBoxItem>
+            <ComboBoxItem>display</ComboBoxItem>
+        </ComboBox>
+        <TextBlock Grid.Column="1" Grid.Row="5" Text="Num of behaviours:" x:Name="behavioursTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="5" Width="auto" x:Name="behavioursTextBox"
+                 Margin="10,0,0,5" Visibility="Collapsed" PreviewTextInput="intTextBox_PreviewTextInput" />
+        <!-- Combobox for behaviour types -->
+        <TextBlock Grid.Column="1" Grid.Row="6" Text="Behaviour type:" x:Name="behavioursTypeTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <ComboBox Grid.Column="2" Grid.Row="6" Width="auto" x:Name="behavioursTypeComboBox"
+                 Margin="10,0,0,5" Visibility="Collapsed">
+            <ComboBoxItem>default</ComboBoxItem>
+            <ComboBoxItem>disabled</ComboBoxItem>
+            <ComboBoxItem>blockage</ComboBoxItem>
+            <ComboBoxItem>reserved</ComboBoxItem>
+        </ComboBox>
+        <!-- Days the behaviour will work -->
+        <TextBlock Grid.Column="1" Grid.Row="7" Text="End date of behaviours:" x:Name="behaviourEndTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <DatePicker Grid.Column="2" Grid.Row="7" Width="auto" x:Name="behaviourEndDatePicker"
+                 Margin="10,0,0,5" Visibility="Collapsed"/>
+        <TextBlock Grid.Column="1" Grid.Row="8" Text="Behaviour days:" x:Name="behaviourDaysTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <CheckBox Grid.Column="2" Grid.Row="8" Width="auto" x:Name="behaviourDaysMoComboBox" Content="Monday"
+                  Margin="-60,0,0,5" Visibility="Collapsed" Grid.ColumnSpan="2"/>
+        <CheckBox Grid.Column="2" Grid.Row="8" Width="auto" x:Name="behaviourDaysTuComboBox" Content="Tuesday"
+                  Margin="20,0,0,5" Visibility="Collapsed" Grid.ColumnSpan="2"/>
+        <CheckBox Grid.Column="2" Grid.Row="8" Width="auto" x:Name="behaviourDaysWeComboBox" Content="Wednesday"
+                  Margin="90,0,0,5" Visibility="Collapsed" Grid.ColumnSpan="2"/>
+        <CheckBox Grid.Column="2" Grid.Row="8" Width="auto" x:Name="behaviourDaysThComboBox" Content="Thursday"
+                  Margin="180,0,0,5" Visibility="Collapsed" Grid.ColumnSpan="2"/>
+        <CheckBox Grid.Column="2" Grid.Row="8" Width="auto" x:Name="behaviourDaysFrComboBox" Content="Friday"
+                  Margin="260,0,0,5" Visibility="Collapsed" Grid.ColumnSpan="2"/>
+        <CheckBox Grid.Column="2" Grid.Row="8" Width="auto" x:Name="behaviourDaysStComboBox" Content="Saturday"
+                  Margin="330,0,0,5" Visibility="Collapsed" Grid.ColumnSpan="2"/>
+        <CheckBox Grid.Column="2" Grid.Row="8" Width="auto" x:Name="behaviourDaysSuComboBox" Content="Sunday"
+                  Margin="410,0,0,5" Visibility="Collapsed" Grid.ColumnSpan="2"/>
+        <!-- Ask this -->
+        <TextBlock Grid.Column="1" Grid.Row="9" Text="TimeRow:" x:Name="behaviourTimeTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="9" Width="auto" x:Name="behaviourTimeTextBox" Text="xx:xx:xx"
+                 Margin="10,0,0,5" Visibility="Collapsed" PreviewTextInput="timeTextBox_PreviewTextInput" />
+        <TextBlock Grid.Column="1" Grid.Row="10" Text="TimeRow active:" x:Name="timeStatusTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <CheckBox Grid.Column="2" Grid.Row="10" Width="auto" x:Name="timeStatusComboBox" Content="Enable"
+                  Margin="10,0,0,5" Visibility="Collapsed" />
+        <!-- IP textboxes for all buttons -->
+        <TextBlock Grid.Column="1" Grid.Row="11" Text="From IP:" x:Name="fromTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="11" Width="auto" x:Name="fromTextBox"
+                 Margin="10,0,0,5" Visibility="Collapsed"/>
+        <TextBlock Grid.Column="1" Grid.Row="12" Text="To IP:" x:Name="toTextBlock"
+                  Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="12" Width="auto" x:Name="toTextBox"
+                 Margin="10,0,0,5" Visibility="Collapsed"/>
+        <!-- Camera -->
+        <TextBlock Grid.Column="1" Grid.Row="13" Text="Num of cameras:" x:Name="camerasTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="13" Width="auto" x:Name="cameraTextBox"
+                 Margin="10,0,0,5" Visibility="Collapsed" PreviewTextInput="intTextBox_PreviewTextInput" />
+        <TextBlock Grid.Column="1" Grid.Row="14" Text="Num of spaces:" x:Name="spaceTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="14" Width="auto" x:Name="spaceTextBox"
+                 Margin="10,0,0,5" Visibility="Collapsed" PreviewTextInput="intTextBox_PreviewTextInput" />
+        <!-- Display -->
+        <TextBlock Grid.Column="1" Grid.Row="15" Text="Display from IP:" x:Name="displayfromTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="15" Width="auto" x:Name="displayfromTextBox"
+                 Margin="10,0,0,5" Visibility="Collapsed"/>
         <!-- Destination path for plate recognition and security recording -->
-        <TextBlock Grid.Column="1" Grid.Row="5" Text="Destination Path:" x:Name="dPathTextBlock"
-                   Margin="150,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
-        <TextBox Grid.Column="1" Grid.Row="5" Width="300" x:Name="dPathTextBox" 
-                 Margin="186,0,0,5" Grid.ColumnSpan="3" Visibility="Collapsed"/>
+        <TextBlock Grid.Column="1" Grid.Row="15" Text="Destination Path:" x:Name="dPathTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="15" Width="auto" x:Name="dPathTextBox" 
+                 Margin="10,0,70,5" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBlock Grid.Column="1" Grid.Row="16" Text="Display to IP:" x:Name="displaytoTextBlock"
+                  Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="16" Width="auto" x:Name="displaytoTextBox"
+                 Margin="10,0,0,5" Visibility="Collapsed"/>
+        <TextBlock Grid.Column="1" Grid.Row="17" Text="Display type:" x:Name="displayTypeTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <ComboBox Grid.Column="2" Grid.Row="17" Width="auto" x:Name="displayTypeComboBox"
+                 Margin="10,0,0,5" Visibility="Collapsed">
+            <ComboBoxItem>totem</ComboBoxItem>
+            <ComboBoxItem>counter</ComboBoxItem>
+            <ComboBoxItem>direction arrow</ComboBoxItem>
+        </ComboBox>
+        <!-- Zones -->
+        <TextBlock Grid.Column="1" Grid.Row="18" Text="Num of zones:" x:Name="zoneTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="18" Width="auto" x:Name="zoneTextBox"
+                 Margin="10,0,0,5" Visibility="Collapsed" PreviewTextInput="intTextBox_PreviewTextInput" />
+        <TextBlock Grid.Column="1" Grid.Row="19" Text="Zone type:" x:Name="zoneTypeTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <ComboBox Grid.Column="2" Grid.Row="19" Width="auto" x:Name="zoneTypeComboBox"
+                 Margin="10,0,0,5" Visibility="Collapsed">
+            <ComboBoxItem>up arrow</ComboBoxItem>
+            <ComboBoxItem>right arrow</ComboBoxItem>
+            <ComboBoxItem>left arrow</ComboBoxItem>
+            <ComboBoxItem>counter</ComboBoxItem>
+        </ComboBox>
+        <TextBlock Grid.Column="1" Grid.Row="20" Text="Num of zone Members:" x:Name="zoneMemberTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="20" Width="auto" x:Name="zoneMemberTextBox"
+                 Margin="10,0,0,5" Visibility="Collapsed" PreviewTextInput="intTextBox_PreviewTextInput" />
+        <!-- ask for sha key-->
+        <TextBlock Grid.Column="1" Grid.Row="21" Text="Sha key:" x:Name="shaTextBlock"
+                   Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
+        <TextBox Grid.Column="2" Grid.Row="21" Width="auto" x:Name="shaTextBox"
+                 Margin="10,0,0,5" Visibility="Collapsed"/>
+
+
+        <!-- Submit button for all options -->
+        <Button Grid.Column="2" Grid.Row="22" Width="auto" x:Name="submitButton"
+                Content="Submit" Margin="10" Click="SubmitButton_Click" Visibility="Collapsed"/>
     </Grid>
 </Window>
