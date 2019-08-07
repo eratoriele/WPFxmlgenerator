@@ -12,6 +12,7 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="20" />
         </Grid.ColumnDefinitions>
 
@@ -43,18 +44,18 @@
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
 
-        <Button Grid.Column="1" Grid.Row="1" Width="230" x:Name="operationButton"
+        <Button Grid.Column="1" Grid.Row="1" Width="auto" MinWidth="230" x:Name="operationButton"
                 Content="Operation" Margin="10" Click="OperationButton_Click"/>
-        <Button Grid.Column="2" Grid.Row="1" Width="230" x:Name="plateRecognitionButton"
+        <Button Grid.Column="2" Grid.Row="1" Width="auto" MinWidth="230" x:Name="plateRecognitionButton"
                 Content="Plate Recognition" Margin="10" Click="PlateRecognitionButton_Click"/>
-        <Button Grid.Column="3" Grid.Row="1" Width="230" x:Name="securityRecordingButton"
+        <Button Grid.Column="3" Grid.Row="1" Width="auto" MinWidth="230" x:Name="securityRecordingButton"
                 Content="Security Recording" Margin="10" Click="SecurityRecordingButton_Click"/>
 
         <!-- Rest of the objects for operation besides first 2 ip boxes -->
         <TextBlock Grid.Column="1" Grid.Row="2" Text="Num of floors:" x:Name="floorsTextBlock"
                    Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
         <TextBox Grid.Column="2" Grid.Row="2" Width="auto" x:Name="floorsTextBox"
-                 Margin="10,0,0,5" Visibility="Collapsed" PreviewTextInput="intTextBox_PreviewTextInput" />
+                 Margin="10,0,0,5" Visibility="Collapsed" PreviewTextInput="intTextBox_PreviewTextInput"/>
         <TextBlock Grid.Column="1" Grid.Row="3" Text="Num of groups:" x:Name="groupsTextBlock"
                    Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
         <TextBox Grid.Column="2" Grid.Row="3" Width="auto" x:Name="groupsTextBox"
@@ -105,7 +106,7 @@
         <!-- Ask this -->
         <TextBlock Grid.Column="1" Grid.Row="9" Text="TimeRow:" x:Name="behaviourTimeTextBlock"
                    Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>
-        <TextBox Grid.Column="2" Grid.Row="9" Width="auto" x:Name="behaviourTimeTextBox" Text="xx:xx:xx"
+        <TextBox Grid.Column="2" Grid.Row="9" Width="auto" x:Name="behaviourTimeTextBox" Text="hh:mm:ss"
                  Margin="10,0,0,5" Visibility="Collapsed" PreviewTextInput="timeTextBox_PreviewTextInput" />
         <TextBlock Grid.Column="1" Grid.Row="10" Text="TimeRow active:" x:Name="timeStatusTextBlock"
                    Margin="50,0,0,0" Grid.ColumnSpan="2" Visibility="Collapsed"/>

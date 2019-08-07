@@ -4,18 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace XmlGeneratorWPF
 {
@@ -207,7 +201,7 @@ namespace XmlGeneratorWPF
             string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
-
+            
 
             // If operation is chosen
             if (!operationButton.IsEnabled)
@@ -235,41 +229,56 @@ namespace XmlGeneratorWPF
                 // Create a file to write to.   
                 using (StreamWriter sw = File.CreateText(filepath))
                 {
-                    sw.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n" +
-                                "<Topology xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
-                                "  <Floors>\n");
+                    string tobehashed = string.Empty;
+                    Topology tpl = new Topology();
 
-                    // Print floors
-                    for (int i = 1; i <= Int32.Parse(floorsTextBox.Text); i++)
+                    // Create Floors
+                    int numOfFloors = Int32.Parse(floorsTextBox.Text);
+                    tpl.Floors = new TopologyFloor[numOfFloors];
+
+                    for (int i = 1; i <= numOfFloors; i++)
                     {
-                        sw.WriteLine("      <Floor Order=\"" + i + "\">\n" +
-                                     "          <Name>Kat" + i + "</Name>\n" +
-                                     "          <MapPath>C:\\Program Files\\Parkonom\\Shared\\Runtime\\Floor Maps\\Kat" + i + ".jpg</MapPath>\n" +
-                                     "      </Floor>\n");
+                        tpl.Floors[i - 1] = new TopologyFloor
+                        {
+                            Order = (byte)i,
+                            Name = "Kat" + i,
+                            MapPath = "C:\\Program Files\\Parkonom\\Shared\\Runtime\\Floor Maps\\Kat" + i + ".jpg"
+                        };
+
+                        tobehashed += i + i + "C:\\Program Files\\Parkonom\\Shared\\Runtime\\Floor Maps\\Kat" + i + ".jpg";
                     }
 
-                    sw.WriteLine("  </Floors>\n" +
-                                 "  <Groups>\n");
-
-                    // Print groups
-                    for (int i = 1; i <= Int32.Parse(groupsTextBox.Text); i++)
+                    // Create Groups
+                    int numOfGroups = Int32.Parse(groupsTextBox.Text);
+                    tpl.Groups = new TopologyGroup[numOfGroups];
+                    
+                    for (int i = 1; i <= numOfGroups; i++)
                     {
-                        sw.WriteLine("      <Group Id=\"" + i + "\">\n" +
-                                     "          <Name>G " + i + "</Name>\n" +
-                                     "          <Type>" + (groupsTypeComboBox.SelectedIndex + 1) + "</Type>\n" +
-                                     "      </Group>\n");
+                        tpl.Groups[i - 1] = new TopologyGroup
+                        {
+                            Id = (byte)i,
+                            Name = "G " + i,
+                            Type = (byte)(groupsTypeComboBox.SelectedIndex + 1)
+                        };
+
+                        tobehashed += i + "G " + i + (groupsTypeComboBox.SelectedIndex + 1);
                     }
 
-                    sw.WriteLine("  </Groups>\n" +
-                                 "  <Dataservers>\n" +
-                                 "      <Dataserver Id=\"1\">\n" +
-                                 "        <p>127.0.0.1</Ip>\n"+
-                                 "        <Name>D 1</Name>\n" +
-                                 "      </Dataserver>\n" +
-                                 "    </Dataservers>\n" +
-                                 "  <Behaviours>\n");
+                    // Create Dataserver
+                    // This is always fixed
+                    tpl.Dataservers = new TopologyDataservers
+                    {
+                        Dataserver = new TopologyDataserversDataserver
+                        {
+                            Id = (byte)1,
+                            Ip = "127.0.0.1",
+                            Name = "D 1"
+                        }
+                    };
 
+                    tobehashed += "1" + "127.0.0.1" + "D 1";
 
+                    // Create Behaviours
                     // Calculating daily activity
                     double DailyActivity = 0;
                     if ((bool)behaviourDaysMoComboBox.IsChecked)
@@ -287,124 +296,158 @@ namespace XmlGeneratorWPF
                     if ((bool)behaviourDaysSuComboBox.IsChecked)
                         DailyActivity += Math.Pow(2, 6);
 
-                    // This is declared so it is easier to write in below for loop
-                    DateTime date = DateTime.Parse(behaviourEndDatePicker.Text);
+                    int numOfBehaviours = Int32.Parse(behavioursTextBox.Text);
+                    tpl.Behaviours = new TopologyBehaviour[numOfBehaviours];
 
-                    // Print behaviours
-                    // Check if every behaviour only has 1 timerow
-                    for (int i = 1; i <= Int32.Parse(behavioursTextBox.Text); i++)
+                    for (int i = 1; i <= numOfBehaviours; i++)
                     {
-                        sw.WriteLine("      <Behaviour Id=\"" + i + "\">\n" +
-                                     "          <Name>B " + i + "</Name>\n" +
-                                     "          <Type>" + behavioursTypeComboBox.SelectedIndex + "</Type>\n" +
-                                     "          <StartDate>" + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "T" + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second + "</StartDate>\n" +
-                                     "          <EndDate>" + date.Year + "-" + date.Month + "-" + date.Day + "T00:00:00</EndDate>\n" +
-                                     "          <DailyActivity>" + DailyActivity + "</DailyActivity>\n" + 
-                                     "          <TimeRows>\n" +
-                                     "              <TimeRow Order=\"1\">\n" +
-                                     "                  <Time>" + behaviourTimeTextBox.Text + "</Time>\n" +
-                                     "                  <Status>" + timeStatusComboBox.IsChecked + "</Status>\n" +
-                                     "              </TimeRow>\n" +
-                                     "          </TimeRows>\n" + 
-                                     "      </Behaviour>\n");
-                    }
-
-                    sw.WriteLine("  </Behaviours>\n" +
-                                 "  <Controllers>\n");
-
-                    // Print controllers
-                    // Check Axle
-                    // cid is for controller id
-                    int cid = 1;  
-                    for (string ip = fromTextBox.Text; IPAddressToLong(ip) <= ctoIP; ip = incrementIP(ip), cid++ )
-                    {
-                        sw.WriteLine("      <Controller Id=\"" + cid + "\">\n" +
-                                     "          <IP>" + ip + "</Ip>\n" +
-                                     "          <Name>Kontrolör " + cid + "</Name>\n" +
-                                     "          <DataserverId>1</DataserverId>\n" +
-                                     "          <GroupId>1</GroupId>\n" +
-                                     "          <FloorOrder>1</FloorOrder>\n"+
-                                     "          <Cameras>\n");
-
-                        for (int i = 1; i <= Int32.Parse(cameraTextBox.Text); i++)
+                        tpl.Behaviours[i - 1] = new TopologyBehaviour
                         {
-                            sw.WriteLine("              <Camera Order=\"" + i + "\">\n" +
-                                         "                  <Name>Kamera " + i + "</Name>\n" +
-                                         "                  <Axle />\n" +
-                                         "                  <Spaces>\n");
-
-                            for (int j = 1; j <= Int32.Parse(spaceTextBox.Text); j++)
+                            Id = (byte)i,
+                            Name = "B " + i,
+                            Type = (byte)behavioursTypeComboBox.SelectedIndex,
+                            StartDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
+                            EndDate = DateTime.Parse(behaviourEndDatePicker.Text),
+                            DailyActivity = (byte)DailyActivity,
+                            TimeRows = new TopologyBehaviourTimeRows
                             {
-                                sw.WriteLine("                      <Space Order=\"" + j + "\">\n" +
-                                             "                          <Name>Park Alanı " + j + "</Name>\n" +
-                                             "                          <MapLocation>\n" +
-                                             "                          <X>-1</X>\n" +
-                                             "                          <Y>-1</Y>\n" +
-                                             "                          <Angle>0</Angle>\n" +
-                                             "                          <ZoomLevel>1</ZoomLevel>\n" +
-                                             "                        </MapLocation>\n" +
-                                             "                        <BehaviourId>1</BehaviourId>\n" +
-                                             "                      </Space>\n");
+                                TimeRow = new TopologyBehaviourTimeRowsTimeRow
+                                {
+                                    Order = 1,
+                                    Time = DateTime.Parse(behaviourTimeTextBox.Text),
+                                    Status = (timeStatusComboBox.IsChecked == true ? true : false)
+                                }
                             }
+                        };
 
-                            sw.WriteLine("                  </Spaces>\n" + 
-                                         "              </Camera>\n");
-                        }
-
-                        sw.WriteLine("          </Cameras>\n" +
-                                     "      </Controller>\n");
+                        tobehashed += i + "B " + i + behavioursTypeComboBox.SelectedIndex + DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss") +
+                            DateTime.Parse(behaviourEndDatePicker.Text).ToString("yyyy-MM-ddTHH:mm:ss") + DailyActivity + "1" +
+                            DateTime.Parse(behaviourTimeTextBox.Text).ToString("yyyy-MM-ddTHH:mm:ss") + (timeStatusComboBox.IsChecked == true ? "true" : "false");
                     }
 
-                    sw.WriteLine("  </Controllers>\n" +
-                                 "  <Displays>\n");
+                    // Create Controllers
+                    // TODO: Too lazy to calculate ctoIP - cfromIP
+                    // will just create a list and turn it into array later
+                    List<TopologyController> tplcont = new List<TopologyController>();
 
-                    // Print for Displays
-                    // did is for displayer id
+                    int numOfCameras = Int32.Parse(cameraTextBox.Text);
+                    int numOfSpaces = Int32.Parse(spaceTextBox.Text);
+
+                    // For tracking controller id
+                    int cid = 1;
+                    for (string ip = fromTextBox.Text; IPAddressToLong(ip) <= ctoIP; ip = incrementIP(ip), cid++)
+                    {
+                        tplcont.Add(new TopologyController
+                        {
+                            Id = (byte)cid,
+                            Ip = ip,
+                            Name = "Kontrolör " + cid,
+                            DataserverId = 1,
+                            GroupId = 1,
+                            FloorOrder = 1,
+                            Cameras = new TopologyControllerCamera[numOfCameras],
+                        }
+                        );
+
+                        tobehashed += cid + ip + "Kontrolör " + cid + "111";
+
+                        for (int i = 1; i <= numOfCameras; i++)
+                        {
+                            tplcont.ElementAt(cid - 1).Cameras[i - 1] = new TopologyControllerCamera
+                            {
+                                Order = (byte)i,
+                                Name = "Kamera " + i,
+                                Axle = "",
+                                Spaces = new TopologyControllerCameraSpace[numOfSpaces]
+                            };
+
+                            tobehashed += i + "Kamera " + i;
+
+                            for (int j = 1; j <= numOfSpaces; j++)
+                            {
+                                tplcont.ElementAt(cid - 1).Cameras[i - 1].Spaces[j - 1] = new TopologyControllerCameraSpace
+                                {
+                                    Order = (byte)j,
+                                    Name = "Park Alanı " + j,
+                                    MapLocation = new TopologyControllerCameraSpaceMapLocation
+                                    {
+                                        X = -1,
+                                        Y = -1,
+                                        Angle = 0,
+                                        ZoomLevel = 1
+                                    },
+                                    BehaviourId = 1
+                                };
+
+                                tobehashed += j + "Park Alanı " + j + "-1-1011";
+                            }
+                        }
+                    }
+
+                    tpl.Controllers = tplcont.ToArray();
+
+                    // Creating Displays
+                    // TODO: Too lazy to calculate ctoIP - cfromIP
+                    // will just create a list and turn it into array later
+                    List<TopologyDisplay> tpldisp = new List<TopologyDisplay>();
+
+                    int numOfZones = Int32.Parse(zoneTextBox.Text);
+                    int numOfZoneMembers = Int32.Parse(zoneMemberTextBox.Text);
+                    // Check typevalue
+
                     int did = 1;
                     for (string ip = displayfromTextBox.Text; IPAddressToLong(ip) <= dtoIP; ip = incrementIP(ip), did++)
                     {
-                        sw.WriteLine("      <Display Id=\"" + did + "\">\n" +
-                                     "          <Ip>" + ip + "</Ip>\n" +
-                                     "          <Name>Gösterme Ünitesi " + did + "</Name>\n" +
-                                     "          <Type>" + (displayTypeComboBox.SelectedIndex + 1) + "</Type>\n" + 
-                                     "          <TypeValue>0</TypeValue>\n" +
-                                     "          <MapLocation>\n" +
-                                     "              <X>-1</X>\n" +
-                                     "              <Y>-1</Y>\n" +
-                                     "              <Angle>0</Angle>\n" +
-                                     "              <ZoomLevel>1</ZoomLevel>\n" +
-                                     "          </MapLocation>\n" +
-                                     "          <FloorOrder>1</FloorOrder>\n" +
-                                     "          <GroupId>2</GroupId>\n" +
-                                     "          <Zones>\n");
-
-                        for (int i = 1; i <= Int32.Parse(zoneTextBox.Text); i++)
+                        tpldisp.Add(new TopologyDisplay
                         {
-                            sw.WriteLine("              <Zones>\n" +
-                                         "                  <Type>" + (zoneTypeComboBox.SelectedIndex + 1) + "</Type>\n" +
-                                         "                  <ZoneMembers>\n");
-
-                            for (int j = 1; j <= Int32.Parse(zoneMemberTextBox.Text); j++)
+                            Id = (byte)did,
+                            Ip = ip,
+                            Name = "Gösterme Ünitesi " + did,
+                            Type = (byte)(displayTypeComboBox.SelectedIndex + 1),
+                            TypeValue = 0,
+                            MapLocation = new TopologyDisplayMapLocation
                             {
-                                sw.WriteLine("                      <ZoneMember>\n" +
-                                             "                          <ControllerId>1</ControllerId>\n" +
-                                             "                      </ZoneMember>\n");
-                            }
-
-                            sw.WriteLine("                  </ZoneMembers>\n" +
-                                         "              </Zones>\n");
+                                X = -1,
+                                Y = -1,
+                                Angle = 0,
+                                ZoomLevel = 1
+                            },
+                            FloorOrder = 1,
+                            GroupId = 1,
+                            Zones = new TopologyDisplayZone[numOfZones]
                         }
+                        );
 
-                        sw.WriteLine("      </Display>\n");
+                        tobehashed += did + ip + "Gösterme Ünitesi " + did + (displayTypeComboBox.SelectedIndex + 1) + "0-1-10111";
+
+                        for (int i = 1; i <= numOfZones; i++)
+                        {
+                            tpldisp.ElementAt(did - 1).Zones[i - 1] = new TopologyDisplayZone
+                            {
+                                 Type = (byte)i,
+                                 ZoneMembers = new TopologyDisplayZoneZoneMember[numOfZoneMembers]
+                            };
+
+                            tobehashed += i;
+
+                            for (int j = 1; j <= numOfZoneMembers; j++)
+                            {
+                                tpldisp.ElementAt(did - 1).Zones[i - 1].ZoneMembers[j - 1] = new TopologyDisplayZoneZoneMember
+                                {
+                                    ControllerId = 1
+                                };
+
+                                tobehashed += "1";
+                            }
+                        }
                     }
 
-                    
+                    tpl.Displays = tpldisp.ToArray();
+
+                    tobehashed += shaTextBox.Text;
+
                     using (SHA256 sha256Hash = SHA256.Create())
                     {
-                        string tobehashed = shaTextBox.Text + floorsTextBox.Text + groupsTextBox.Text + (groupsTypeComboBox.SelectedIndex + 1) +
-                                            behavioursTextBox.Text + behavioursTypeComboBox.SelectedIndex + behaviourEndDatePicker.Text +
-                                            cameraTextBox.Text + spaceTextBox.Text;
-
                         // ComputeHash - returns byte array  
                         byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(tobehashed.ToCharArray()));
 
@@ -416,13 +459,19 @@ namespace XmlGeneratorWPF
                         }
                         str += bytes[bytes.Length - 1];
 
-                        sw.WriteLine("  </Displays>\n" +
-                                     "  <FileInfo>\n" +
-                                     "      <Hash>" + str + "</Hash>\n" +
-                                     "      <ModifyTime>" + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "T" + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second + "</ModifyTime>\n" +
-                                     "  </FileInfo>\n +" +
-                                     "<Topology>");
+                        tpl.FileInfo = new TopologyFileInfo
+                        {
+                            Hash = str,
+                            ModifyTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
+                        };
 
+                    }
+
+                    XmlSerializer xsSubmit = new XmlSerializer(typeof(Topology));
+                    
+                    using (XmlWriter writer = XmlWriter.Create(sw))
+                    {
+                        xsSubmit.Serialize(writer, tpl);
                     }
 
                 }
@@ -453,21 +502,30 @@ namespace XmlGeneratorWPF
                 // Create a file to write to.   
                 using (StreamWriter sw = File.CreateText(filepath))
                 {
-                    sw.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n" +
-                                "<Config>\n" +
-                                "   <ControllerList>\n");
 
-                    for (string i = fromTextBox.Text; IPAddressToLong(i) <= toIP; i = incrementIP(i))
-                    {
-                        sw.WriteLine("      <Controller>\n" +
-                                     "          <IP>" + i + "</IP>\n" +
-                                     "          <DestinationPath>" + dPathTextBox.Text + (dPathTextBox.Text[dPathTextBox.Text.Length-1] == '\\' ? "" : "\\") + i + "</DestinationPath>\n" +
-                                     "      </Controller>\n");
-                                                                                          // If \ is given in the destination path, don't write another \
+                    plate.Config2 plt = new plate.Config2();
+
+                    // TODO: too lazy to figure out number of onjects inside at this point
+                    List<plate.ConfigController> pltcont = new List<plate.ConfigController>();
+
+                    for (string i = fromTextBox.Text; IPAddressToLong(i) <= toIP; i = incrementIP(i)) {
+
+                        pltcont.Add(new plate.ConfigController
+                        {
+                            IP = i,
+                            DestinationPath = dPathTextBox.Text + (dPathTextBox.Text[dPathTextBox.Text.Length - 1] == '\\' ? "" : "\\") + i
+                        }
+                        );
                     }
 
-                    sw.WriteLine("  </ControllerList>\n" +
-                                 "</Config>");
+                    plt.ControllerList = pltcont.ToArray();
+
+                    XmlSerializer xsSubmit = new XmlSerializer(typeof(plate.Config2));
+
+                    using (XmlWriter writer = XmlWriter.Create(sw))
+                    {
+                        xsSubmit.Serialize(writer, plt);
+                    }
                 }
                 
             }
@@ -496,24 +554,35 @@ namespace XmlGeneratorWPF
                 // Create a file to write to.   
                 using (StreamWriter sw = File.CreateText(filepath))
                 {
-                    sw.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n" +
-                                "<Config>\n" +
-                                "   <ControllerList>\n");
+
+                    security.Config sec = new security.Config();
+
+                    // TODO too lazy to figure ot exact number to create an array
+                    List<security.ConfigController> seccont = new List<security.ConfigController>();
 
                     for (string i = fromTextBox.Text; IPAddressToLong(i) <= toIP; i = incrementIP(i))
                     {
-                        sw.WriteLine("      <Controller>\n" +
-                                     "          <SourcePath>\\\\" + i + "\\ram\\pmc\\finished</SourcePath>\n" +
-                                     "          <DestinationPath>" + dPathTextBox.Text + (dPathTextBox.Text[dPathTextBox.Text.Length-1] == '\\' ? "" : "\\") + i + "</DestinationPath>\n" +
-                                     "      </Controller>\n");
-                                                                                          // If \ is given in the destination path, don't write another \
+                        seccont.Add(new security.ConfigController
+                        {
+                            SourcePath = "\\\\" + i + "\\ram\\pmc\\finished",
+                            DestinationPath = dPathTextBox.Text + (dPathTextBox.Text[dPathTextBox.Text.Length - 1] == '\\' ? "" : "\\") + i
+                        }
+                        );
                     }
 
-                    sw.WriteLine("  </ControllerList>\n" +
-                                 "</Config>");
+                    sec.ControllerList = seccont.ToArray();
+
+                    XmlSerializer xsSubmit = new XmlSerializer(typeof(security.Config));
+
+                    using (XmlWriter writer = XmlWriter.Create(sw))
+                    {
+                        xsSubmit.Serialize(writer, sec);
+                    }
                 }
             }
 
+
+            MessageBox.Show("XML is generated");
         }
 
         // Used for comparing ip addresses
