@@ -1,5 +1,7 @@
 ﻿
 // NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
+using System.Collections.Generic;
+using System.Xml.Serialization;
 /// <remarks/>
 [System.SerializableAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7,24 +9,27 @@
 [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
 public partial class Topology
 {
+    [XmlIgnore]
+    [System.ComponentModel.DataAnnotations.Key]
+    public int ID { get; set; }
 
-    private TopologyFloor[] floorsField;
+    private List<TopologyFloor> floorsField;
 
-    private TopologyGroup[] groupsField;
+    private List<TopologyGroup> groupsField;
 
     private TopologyDataservers dataserversField;
 
-    private TopologyBehaviour[] behavioursField;
+    private List<TopologyBehaviour> behavioursField;
 
-    private TopologyController[] controllersField;
+    private List<TopologyController> controllersField;
 
-    private TopologyDisplay[] displaysField;
+    private List<TopologyDisplay> displaysField;
 
     private TopologyFileInfo fileInfoField;
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayItemAttribute("Floor", IsNullable = false)]
-    public TopologyFloor[] Floors
+    public List<TopologyFloor> Floors
     {
         get
         {
@@ -38,7 +43,7 @@ public partial class Topology
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayItemAttribute("Group", IsNullable = false)]
-    public TopologyGroup[] Groups
+    public List<TopologyGroup> Groups
     {
         get
         {
@@ -65,7 +70,7 @@ public partial class Topology
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayItemAttribute("Behaviour", IsNullable = false)]
-    public TopologyBehaviour[] Behaviours
+    public List<TopologyBehaviour> Behaviours
     {
         get
         {
@@ -79,7 +84,7 @@ public partial class Topology
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayItemAttribute("Controller", IsNullable = false)]
-    public TopologyController[] Controllers
+    public List<TopologyController> Controllers
     {
         get
         {
@@ -93,7 +98,7 @@ public partial class Topology
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayItemAttribute("Display", IsNullable = false)]
-    public TopologyDisplay[] Displays
+    public List<TopologyDisplay> Displays
     {
         get
         {
@@ -125,6 +130,9 @@ public partial class Topology
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyFloor
 {
+    [XmlIgnore]
+    [System.ComponentModel.DataAnnotations.Key]
+    public int ID { get; set; }
 
     private string nameField;
 
@@ -184,6 +192,7 @@ public partial class TopologyGroup
 
     private byte typeField;
 
+    [System.ComponentModel.DataAnnotations.Key]
     private byte idField;
 
     /// <remarks/>
@@ -233,6 +242,9 @@ public partial class TopologyGroup
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyDataservers
 {
+    [XmlIgnore]
+    [System.ComponentModel.DataAnnotations.Key]
+    public int ID { get; set; }
 
     private TopologyDataserversDataserver dataserverField;
 
@@ -256,11 +268,11 @@ public partial class TopologyDataservers
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyDataserversDataserver
 {
-
     private string ipField;
 
     private string nameField;
 
+    [System.ComponentModel.DataAnnotations.Key]
     private byte idField;
 
     /// <remarks/>
@@ -310,7 +322,6 @@ public partial class TopologyDataserversDataserver
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyBehaviour
 {
-
     private string nameField;
 
     private byte typeField;
@@ -323,6 +334,7 @@ public partial class TopologyBehaviour
 
     private TopologyBehaviourTimeRows timeRowsField;
 
+    [System.ComponentModel.DataAnnotations.Key]
     private byte idField;
 
     /// <remarks/>
@@ -424,6 +436,9 @@ public partial class TopologyBehaviour
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyBehaviourTimeRows
 {
+    [XmlIgnore]
+    [System.ComponentModel.DataAnnotations.Key]
+    public int ID { get; set; }
 
     private TopologyBehaviourTimeRowsTimeRow timeRowField;
 
@@ -447,6 +462,9 @@ public partial class TopologyBehaviourTimeRows
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyBehaviourTimeRowsTimeRow
 {
+    [XmlIgnore]
+    [System.ComponentModel.DataAnnotations.Key]
+    public int ID { get; set; }
 
     private System.DateTime timeField;
 
@@ -501,7 +519,6 @@ public partial class TopologyBehaviourTimeRowsTimeRow
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyController
 {
-
     private string ipField;
 
     private string nameField;
@@ -512,9 +529,10 @@ public partial class TopologyController
 
     private byte floorOrderField;
 
-    private TopologyControllerCamera[] camerasField;
+    private List<TopologyControllerCamera> camerasField;
 
-    private ushort idField;
+    [System.ComponentModel.DataAnnotations.Key]
+    private byte idField;
 
     /// <remarks/>
     public string Ip
@@ -583,7 +601,7 @@ public partial class TopologyController
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayItemAttribute("Camera", IsNullable = false)]
-    public TopologyControllerCamera[] Cameras
+    public List<TopologyControllerCamera> Cameras
     {
         get
         {
@@ -597,7 +615,7 @@ public partial class TopologyController
 
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public ushort Id
+    public byte Id
     {
         get
         {
@@ -616,12 +634,15 @@ public partial class TopologyController
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyControllerCamera
 {
+    [XmlIgnore]
+    [System.ComponentModel.DataAnnotations.Key]
+    public int ID { get; set; }
 
     private string nameField;
 
     private string axleField;
 
-    private TopologyControllerCameraSpace[] spacesField;
+    private List<TopologyControllerCameraSpace> spacesField;
 
     private byte orderField;
 
@@ -653,7 +674,7 @@ public partial class TopologyControllerCamera
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayItemAttribute("Space", IsNullable = false)]
-    public TopologyControllerCameraSpace[] Spaces
+    public List<TopologyControllerCameraSpace> Spaces
     {
         get
         {
@@ -686,6 +707,9 @@ public partial class TopologyControllerCamera
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyControllerCameraSpace
 {
+    [XmlIgnore]
+    [System.ComponentModel.DataAnnotations.Key]
+    public int ID { get; set; }
 
     private string nameField;
 
@@ -755,17 +779,20 @@ public partial class TopologyControllerCameraSpace
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyControllerCameraSpaceMapLocation
 {
+    [XmlIgnore]
+    [System.ComponentModel.DataAnnotations.Key]
+    public int ID { get; set; }
 
-    private sbyte xField;
+    private byte xField;
 
-    private sbyte yField;
+    private byte yField;
 
     private byte angleField;
 
     private byte zoomLevelField;
 
     /// <remarks/>
-    public sbyte X
+    public byte X
     {
         get
         {
@@ -778,7 +805,7 @@ public partial class TopologyControllerCameraSpaceMapLocation
     }
 
     /// <remarks/>
-    public sbyte Y
+    public byte Y
     {
         get
         {
@@ -823,7 +850,6 @@ public partial class TopologyControllerCameraSpaceMapLocation
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyDisplay
 {
-
     private string ipField;
 
     private string nameField;
@@ -840,8 +866,9 @@ public partial class TopologyDisplay
 
     private byte groupIdField;
 
-    private TopologyDisplayZone[] zonesField;
+    private List<TopologyDisplayZone> zonesField;
 
+    [System.ComponentModel.DataAnnotations.Key]
     private byte idField;
 
     /// <remarks/>
@@ -950,7 +977,7 @@ public partial class TopologyDisplay
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayItemAttribute("Zone", IsNullable = false)]
-    public TopologyDisplayZone[] Zones
+    public List<TopologyDisplayZone> Zones
     {
         get
         {
@@ -983,17 +1010,20 @@ public partial class TopologyDisplay
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyDisplayMapLocation
 {
+    [XmlIgnore]
+    [System.ComponentModel.DataAnnotations.Key]
+    public int ID { get; set; }
 
-    private sbyte xField;
+    private byte xField;
 
-    private sbyte yField;
+    private byte yField;
 
     private byte angleField;
 
     private byte zoomLevelField;
 
     /// <remarks/>
-    public sbyte X
+    public byte X
     {
         get
         {
@@ -1006,7 +1036,7 @@ public partial class TopologyDisplayMapLocation
     }
 
     /// <remarks/>
-    public sbyte Y
+    public byte Y
     {
         get
         {
@@ -1051,10 +1081,13 @@ public partial class TopologyDisplayMapLocation
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyDisplayZone
 {
+    [XmlIgnore]
+    [System.ComponentModel.DataAnnotations.Key]
+    public int ID { get; set; }
 
     private byte typeField;
 
-    private TopologyDisplayZoneZoneMember[] zoneMembersField;
+    private List<TopologyDisplayZoneZoneMember> zoneMembersField;
 
     /// <remarks/>
     public byte Type
@@ -1071,7 +1104,7 @@ public partial class TopologyDisplayZone
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayItemAttribute("ZoneMember", IsNullable = false)]
-    public TopologyDisplayZoneZoneMember[] ZoneMembers
+    public List<TopologyDisplayZoneZoneMember> ZoneMembers
     {
         get
         {
@@ -1090,6 +1123,9 @@ public partial class TopologyDisplayZone
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyDisplayZoneZoneMember
 {
+    [XmlIgnore]
+    [System.ComponentModel.DataAnnotations.Key]
+    public int ID { get; set; }
 
     private ushort controllerIdField;
 
@@ -1113,6 +1149,9 @@ public partial class TopologyDisplayZoneZoneMember
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class TopologyFileInfo
 {
+    [XmlIgnore]
+    [System.ComponentModel.DataAnnotations.Key]
+    public int ID { get; set; }
 
     private string hashField;
 

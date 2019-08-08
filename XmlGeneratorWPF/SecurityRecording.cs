@@ -1,4 +1,7 @@
-﻿namespace security
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
+
+namespace security
 {
     // NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
     /// <remarks/>
@@ -8,12 +11,15 @@
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
     public partial class Config
     {
-
-        private ConfigController[] controllerListField;
+        [XmlIgnore]
+        [System.ComponentModel.DataAnnotations.Key]
+        public int ID { get; set; }
+        
+        private List<ConfigController> controllerListField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("Controller", IsNullable = false)]
-        public ConfigController[] ControllerList
+        public List<ConfigController> ControllerList
         {
             get
             {
@@ -32,6 +38,9 @@
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ConfigController
     {
+        [XmlIgnore]
+        [System.ComponentModel.DataAnnotations.Key]
+        public int ID { get; set; }
 
         private string sourcePathField;
 

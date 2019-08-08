@@ -1,19 +1,25 @@
-﻿namespace plate
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
+
+namespace plate
 {
     // NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
     /// <remarks/>
     [System.SerializableAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-    public partial class Config2
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false, ElementName = "Config")]
+    public partial class ConfigP
     {
+        [XmlIgnore]
+        [System.ComponentModel.DataAnnotations.Key]
+        public int ID { get; set; }
 
-        private ConfigController[] controllerListField;
+        private List<ConfigControllerP> controllerListField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("Controller", IsNullable = false)]
-        public ConfigController[] ControllerList
+        public List<ConfigControllerP> ControllerList
         {
             get
             {
@@ -30,8 +36,11 @@
     [System.SerializableAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class ConfigController
+    public partial class ConfigControllerP
     {
+        [XmlIgnore]
+        [System.ComponentModel.DataAnnotations.Key]
+        public int ID { get; set; }
 
         private string ipField;
 
