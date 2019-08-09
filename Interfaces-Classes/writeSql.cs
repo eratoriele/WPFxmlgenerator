@@ -1,7 +1,7 @@
 ﻿
 namespace writeInterface
 {
-    class writeSql : IwriteXMLSQL
+    public class writeSql : IwriteXMLSQL
     {
         public void Write(security.Config sec)
         {

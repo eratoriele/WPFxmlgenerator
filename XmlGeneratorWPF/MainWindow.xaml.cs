@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Net;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
-using System.Xml;
-using System.Xml.Serialization;
+
 
 namespace XmlGeneratorWPF
 {
@@ -203,6 +201,18 @@ namespace XmlGeneratorWPF
             // If operation is chosen
             if (!operationButton.IsEnabled)
             {
+                // Check if all boxes are filled
+                if (floorsTextBox.Text.Equals(string.Empty) || groupsTextBox.Text.Equals(string.Empty) || groupsTypeComboBox.SelectedIndex == -1 ||
+                    behavioursTextBox.Text.Equals(string.Empty) || behavioursTypeComboBox.SelectedIndex == -1 || behaviourEndDatePicker.Text.Equals(string.Empty) ||
+                    behaviourTimeTextBox.Text.Equals(string.Empty) || fromTextBox.Text.Equals(string.Empty) || toTextBox.Text.Equals(string.Empty) ||
+                    cameraTextBox.Text.Equals(string.Empty) || spaceTextBox.Text.Equals(string.Empty) || displayfromTextBox.Text.Equals(string.Empty) ||
+                    displaytoTextBox.Text.Equals(string.Empty) || displayTypeComboBox.SelectedIndex == -1 || zoneTextBox.Text.Equals(string.Empty) ||
+                    zoneTypeComboBox.SelectedIndex == -1 || zoneMemberTextBox.Text.Equals(string.Empty) || shaTextBox.Text.Equals(string.Empty))
+                {
+                    MessageBox.Show("Please fill all the boxes");
+                    return;
+                }
+
                 // convert to long in case there is any zero padding in
                 // the strings
                 uint cfromIP = IPAddressToLong(fromTextBox.Text);
@@ -220,7 +230,7 @@ namespace XmlGeneratorWPF
                     MessageBox.Show("Display From address should be less than To Address");
                     return;
                 }
-                
+
                 string tobehashed = string.Empty;
                 Topology tpl = new Topology();
 

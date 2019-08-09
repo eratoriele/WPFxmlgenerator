@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace writeInterface
 {
-    class writeXml : IwriteXMLSQL
+    public class writeXml : IwriteXMLSQL
     {
         public void Write(security.Config sec)
         {
