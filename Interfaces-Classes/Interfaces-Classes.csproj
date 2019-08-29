@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="addresses.cs" />
     <Compile Include="DBContexts.cs" />
     <Compile Include="IwriteXMLSQL.cs" />
     <Compile Include="PlateRecognition.cs" />

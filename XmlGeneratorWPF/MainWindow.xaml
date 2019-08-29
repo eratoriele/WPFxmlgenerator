@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XmlGeneratorWPF"
         mc:Ignorable="d"
-        Title="XML Generator" Height="700" Width="800">
+        Title="XML Generator" Height="700" Width="1050">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="20" />
@@ -50,6 +51,8 @@
                 Content="Plate Recognition" Margin="10,10,10,40" Click="PlateRecognitionButton_Click"/>
         <Button Grid.Column="3" Grid.Row="1" Width="auto" MinWidth="230" x:Name="securityRecordingButton"
                 Content="Security Recording" Margin="10,10,10,40" Click="SecurityRecordingButton_Click"/>
+        <Button Grid.Column="4" Grid.Row="1" Width="auto" MinWidth="230" x:Name="addressGeneratorButton"
+                Content="Address Generator" Margin="10,10,10,40" Click="AddressGeneratorButton_Click"/>
 
         <!-- Rest of the objects for operation besides first 2 ip boxes -->
         <TextBlock Grid.Column="1" Grid.Row="2" Text="Num of floors:" x:Name="floorsTextBlock"

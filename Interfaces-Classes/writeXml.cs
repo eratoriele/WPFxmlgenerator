@@ -57,5 +57,22 @@ namespace writeInterface
                 }
             }
         }
+
+        public void Write(Addresses adr)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            using (StreamWriter sw = File.CreateText(path + "\\addresses.xml"))
+            {
+                XmlSerializer xsSubmit = new XmlSerializer(typeof(Addresses));
+
+                using (XmlWriter writer = XmlWriter.Create(sw))
+                {
+                    xsSubmit.Serialize(writer, adr);
+                }
+            }
+        }
     }
 }

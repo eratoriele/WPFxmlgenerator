@@ -124,6 +124,21 @@ namespace XmlGeneratorWPF
             fromTextBox.Focus();
         }
 
+        private void AddressGeneratorButton_Click(object sender, RoutedEventArgs e)
+        {
+            turnAllInvisible();
+
+            fromTextBox.Visibility = Visibility.Visible;
+            fromTextBlock.Visibility = Visibility.Visible;
+            toTextBox.Visibility = Visibility.Visible;
+            toTextBlock.Visibility = Visibility.Visible;
+
+            xmlButton.Visibility = Visibility.Visible;
+            sqlButton.Visibility = Visibility.Collapsed;
+
+            addressGeneratorButton.IsEnabled = false;
+        }
+
         private void intTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = new Regex("[^0-9]+").IsMatch(e.Text);
@@ -193,6 +208,7 @@ namespace XmlGeneratorWPF
             operationButton.IsEnabled = true;
             plateRecognitionButton.IsEnabled = true;
             securityRecordingButton.IsEnabled = true;
+            addressGeneratorButton.IsEnabled = true;
         }
 
         // Output the xml
@@ -577,6 +593,45 @@ namespace XmlGeneratorWPF
                 {
                     writeInterface.writeSql wrt = new writeInterface.writeSql();
                     wrt.Write(sec);
+                }
+
+            }
+            // If genereate addresses is chosen
+            else if (!addressGeneratorButton.IsEnabled)
+            {
+                if (fromTextBox.Text.Equals(string.Empty) || toTextBox.Text.Equals(string.Empty))
+                {
+                    MessageBox.Show("Fill all the text boxes");
+                    return;
+                }
+
+                // convert to long in case there is any zero padding in
+                // the strings
+                uint fromIP = IPAddressToLong(fromTextBox.Text);
+                uint toIP = IPAddressToLong(toTextBox.Text);
+
+                if (fromIP > toIP)
+                {
+                    MessageBox.Show("From address should be less than To Address");
+                    return;
+                }
+
+                Addresses adr = new Addresses();
+
+                for (string i = fromTextBox.Text; IPAddressToLong(i) <= toIP; i = incrementIP(i))
+                {
+                    adr.AddressList.Add(new AddressesAddress
+                    {
+                        Name = i,
+                        IP = i
+                    }
+                    );
+                }
+
+                if (xmlButton.IsFocused)
+                {
+                    writeInterface.writeXml wrt = new writeInterface.writeXml();
+                    wrt.Write(adr);
                 }
 
             }
